@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>application_entities</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\application-domain-models\application-data-models.csproj" />
+    <ProjectReference Include="..\application-domain\application-domain.csproj" />
+    <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Entities\" />
+    <None Remove="Entities\Account\" />
+    <None Remove="Entities\Empresa\" />
+    <None Remove="Entities\Endereco\" />
+    <None Remove="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\_Base\Account\" />
+    <Folder Include="Entities\_Base\Endereco\" />
+  </ItemGroup>
+</Project>

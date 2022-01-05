@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>application_service</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\application-domain-entities\application-data-entities.csproj" />
+    <ProjectReference Include="..\application-domain\application-domain.csproj" />
+    <ProjectReference Include="..\application-infra-data\application-infra-data.csproj" />
+    <ProjectReference Include="..\application-infra-shared\application-infra-shared.csproj" />
+    <ProjectReference Include="..\Biblioteca\Biblioteca.csproj" />
+  </ItemGroup>
+
+</Project>
