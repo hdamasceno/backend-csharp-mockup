@@ -24,35 +24,23 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Name nome = FuncoesEspeciais.ToString(objetoDynamic?.Nome);
-            SexoSigla sigla = FuncoesEspeciais.ToString(objetoDynamic?.Sigla);
-
-            AddNotifications(cadastradoDataHora.contract, nome.contract, sigla.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<Sexo>(this, objetoDynamic);
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                Nome = nome;
-                Sigla = sigla;
+                AddNotifications(CadastradoDataHora.contract, Nome.contract, Sigla.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

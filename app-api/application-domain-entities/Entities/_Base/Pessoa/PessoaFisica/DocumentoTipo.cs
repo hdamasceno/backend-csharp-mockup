@@ -32,48 +32,33 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-            DecimalPositive appCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.AppCodigo);
-            DecimalPositive sngpcCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SngpcCodigo);
-            DecimalPositive nfeCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.NFeCodigo);
-            DecimalPositive nfceCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.NFCeCodigo);
-            DecimalPositive satCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SatCodigo);
-            DecimalPositive spedFiscalCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SpedFiscalCodigo);
-            DecimalPositive spedContribuicaoCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SpedContribuicaoCodigo);
-            bool temFoto = FuncoesEspeciais.ToString(objetoDynamic?.TemFoto) == "TRUE";
-
-            AddNotifications(cadastradoDataHora.contract, Nome.contract, appCodigo.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<DocumentoTipo>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                Nome = Nome;
-                AppCodigo = appCodigo;
-                SngpcCodigo = sngpcCodigo;
-                NFeCodigo = nfeCodigo;
-                NFCeCodigo = nfceCodigo;
-                SatCodigo = satCodigo;
-                SpedFiscalCodigo = spedFiscalCodigo;
-                SpedContribuicaoCodigo = spedContribuicaoCodigo;
-                TemFoto = temFoto;
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    Nome.contract,
+                    AppCodigo.contract,
+                    SngpcCodigo.contract,
+                    NFeCodigo.contract,
+                    NFCeCodigo.contract,
+                    SpedFiscalCodigo.contract,
+                    SpedContribuicaoCodigo.contract,
+                    SintegraCodigo.contract,
+                    SatCodigo.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

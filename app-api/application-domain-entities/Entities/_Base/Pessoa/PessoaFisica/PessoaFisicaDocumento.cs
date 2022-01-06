@@ -35,60 +35,35 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-            Key pessoaFisicaId = FuncoesEspeciais.ToGuid(objetoDynamic?.PessoaFisicaId);
-            Key documentoTipoId = FuncoesEspeciais.ToGuid(objetoDynamic?.DocumentoTipoId);
-            string documentoNumero = FuncoesEspeciais.ToString(objetoDynamic?.DocumentoNumero);
-            Data? documentoEmissaoData = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.DocumentoEmissaoData, true, false, true);
-            Data? documentoValidadeData = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.DocumentoValidadeData, true, false, true);
-            Key? documentoEmissaoEstadoId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.DocumentoEmissaoEstadoId);
-            Key? documentoEmissaoOrgaoExpedidorId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.DocumentoEmissaoOrgaoExpedidorId);
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract, pessoaFisicaId.contract, documentoTipoId.contract);
-
-            if (documentoEmissaoData.HasValue)
-                AddNotifications(documentoEmissaoData?.contract);
-
-            if (documentoValidadeData.HasValue)
-                AddNotifications(documentoValidadeData?.contract);
-
-            if (documentoEmissaoEstadoId.HasValue)
-                AddNotifications(documentoEmissaoEstadoId?.contract);
-
-            if (documentoEmissaoOrgaoExpedidorId.HasValue)
-                AddNotifications(documentoEmissaoOrgaoExpedidorId?.contract);
+            LoadFromDynamic<PessoaFisicaDocumento>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                AccountId = accountId;
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                PessoaFisicaId = pessoaFisicaId;
-                DocumentoTipoId = documentoTipoId;
-                DocumentoNumero = documentoNumero;
-                DocumentoEmissaoData = documentoEmissaoData;
-                DocumentoEmissaoEstadoId = documentoEmissaoEstadoId;
-                DocumentoEmissaoOrgaoExpedidorId = documentoEmissaoOrgaoExpedidorId;
-                DocumentoValidadeData = documentoValidadeData;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, PessoaFisicaId.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
+
+                if (DocumentoEmissaoData.HasValue)
+                    AddNotifications(DocumentoEmissaoData?.contract);
+
+                if (DocumentoValidadeData.HasValue)
+                    AddNotifications(DocumentoValidadeData?.contract);
+
+                if (DocumentoEmissaoEstadoId.HasValue)
+                    AddNotifications(DocumentoEmissaoEstadoId?.contract);
+
+                if (DocumentoEmissaoOrgaoExpedidorId.HasValue)
+                    AddNotifications(DocumentoEmissaoOrgaoExpedidorId?.contract);
             }
         }
     }

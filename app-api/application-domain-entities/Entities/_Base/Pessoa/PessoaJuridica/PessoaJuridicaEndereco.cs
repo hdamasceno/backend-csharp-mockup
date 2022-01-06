@@ -29,40 +29,23 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-            Key pessoaJuridicaId = FuncoesEspeciais.ToGuid(objetoDynamic?.PessoaJuridicaId);
-            Key enderecoId = FuncoesEspeciais.ToGuid(objetoDynamic?.EnderecoId);
-            bool isPrincipal = FuncoesEspeciais.ToString(objetoDynamic?.IsPrincipal) == "TRUE";
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract, pessoaJuridicaId.contract, enderecoId.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<PessoaJuridicaEndereco>(this, objetoDynamic);
 
             if (IsValid)
             {
-                AccountId = accountId;
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                PessoaJuridicaId = pessoaJuridicaId;
-                EnderecoId = enderecoId;
-                IsPrincipal = isPrincipal;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, PessoaJuridicaId.contract, EnderecoId.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

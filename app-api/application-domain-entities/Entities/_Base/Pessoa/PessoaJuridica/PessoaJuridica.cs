@@ -32,66 +32,48 @@ namespace application_data_entities
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-            Key? regimeTributarioId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.RegimeTributarioId);
-            Cnpj documentoCnpj = FuncoesEspeciais.ToString(objetoDynamic?.DocumentoCnpj);
-            InscricaoMunicipal? documentoInscricaoMunicipal = FuncoesEspeciais.ToString(objetoDynamic?.DocumentoInscricaoMunicipal);
-            Cnae? cnae = FuncoesEspeciais.ToString(objetoDynamic?.CNAE);
-            Name razaoSocial = FuncoesEspeciais.ToString(objetoDynamic?.RazaoSocial);
-            Name? nomeFantasia = FuncoesEspeciais.ToString(objetoDynamic?.NomeFantasia);
-            Data? aberturaData = FuncoesEspeciais.ToDateTime(objetoDynamic?.AberturaData, true, false, true);
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract, documentoCnpj.contract, razaoSocial.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
-
-            if (regimeTributarioId.HasValue)
-                AddNotifications(regimeTributarioId?.contract);
-
-            if (documentoInscricaoMunicipal.HasValue)
-                AddNotifications(documentoInscricaoMunicipal?.contract);
-
-            if (cnae.HasValue)
-                AddNotifications(cnae?.contract);
-
-            if (nomeFantasia.HasValue)
-                AddNotifications(nomeFantasia?.contract);
-
-            if (aberturaData.HasValue)
-                AddNotifications(aberturaData?.contract);
-
-            if (FuncoesEspeciais.IsFieldExist(objetoDynamic, "DocumentoInscricaoEstadualList"))
-            {
-                if (objetoDynamic != null)
-                {
-                    foreach (var item in objetoDynamic.DocumentoInscricaoEstadualList)
-                    {
-                        var documentoInscricaoEstadual = new PessoaJuridicaInscricaoEstadual(item);
-
-                        if (documentoInscricaoEstadual.IsValid)
-                            DocumentoInscricaoEstadualList.Add(documentoInscricaoEstadual);
-                    }
-                }
-            }
+            LoadFromDynamic<PessoaJuridica>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                AccountId = accountId;
-                RegimeTributarioId = regimeTributarioId;
-                DocumentoCnpj = documentoCnpj;
-                DocumentoInscricaoMunicipal = DocumentoInscricaoMunicipal;
-                CNAE = cnae;
-                RazaoSocial = razaoSocial;
-                NomeFantasia = nomeFantasia;
-                AberturaData = aberturaData;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, DocumentoCnpj.contract, RazaoSocial.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
+
+                if (RegimeTributarioId.HasValue)
+                    AddNotifications(RegimeTributarioId?.contract);
+
+                if (DocumentoInscricaoMunicipal.HasValue)
+                    AddNotifications(DocumentoInscricaoMunicipal?.contract);
+
+                if (CNAE.HasValue)
+                    AddNotifications(CNAE?.contract);
+
+                if (NomeFantasia.HasValue)
+                    AddNotifications(NomeFantasia?.contract);
+
+                if (AberturaData.HasValue)
+                    AddNotifications(AberturaData?.contract);
+
+                if (FuncoesEspeciais.IsFieldExist(objetoDynamic, "DocumentoInscricaoEstadualList"))
+                {
+                    if (objetoDynamic != null)
+                    {
+                        foreach (var item in objetoDynamic.DocumentoInscricaoEstadualList)
+                        {
+                            var documentoInscricaoEstadual = new PessoaJuridicaInscricaoEstadual(item);
+
+                            if (documentoInscricaoEstadual.IsValid)
+                                DocumentoInscricaoEstadualList.Add(documentoInscricaoEstadual);
+                        }
+                    }
+                }
             }
         }
     }

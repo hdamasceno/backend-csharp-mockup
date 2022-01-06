@@ -27,53 +27,31 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Name nome = FuncoesEspeciais.ToString(objetoDynamic?.Nome);
-            DecimalPositive satCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SatCodigo);
-            DecimalPositive nfeCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.NFeCodigo);
-            DecimalPositive nfceCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.NFCeCodigo);
-            DecimalPositive spedFiscalCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SpedFiscalCodigo);
-            DecimalPositive spedContribuicaoCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SpedContribuicaoCodigo);
-            DecimalPositive sintegraCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.SintegraCodigo);
-
-            AddNotifications
-                (
-                    cadastradoDataHora.contract,
-                    nome.contract,
-                    satCodigo.contract,
-                    nfeCodigo.contract,
-                    nfceCodigo.contract,
-                    spedFiscalCodigo.contract,
-                    spedContribuicaoCodigo.contract,
-                    SintegraCodigo.contract
-                );
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<RegimeTributario>(this, objetoDynamic);
 
             if (IsValid)
             {
-                Nome = Nome;
-                SatCodigo = satCodigo;
-                NFeCodigo = nfeCodigo;
-                NFCeCodigo = nfceCodigo;
-                SpedContribuicaoCodigo = spedContribuicaoCodigo;
-                SpedFiscalCodigo = spedFiscalCodigo;
-                SintegraCodigo = sintegraCodigo;
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    Nome.contract,
+                    NFeCodigo.contract,
+                    NFCeCodigo.contract,
+                    SpedFiscalCodigo.contract,
+                    SpedContribuicaoCodigo.contract,
+                    SintegraCodigo.contract,
+                    SatCodigo.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

@@ -26,38 +26,23 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-            InscricaoEstadual inscricaoEstadual = FuncoesEspeciais.ToString(objetoDynamic?.InscricaoEstadual);
-            Uf uf = FuncoesEspeciais.ToString(objetoDynamic?.UF);
-
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract, inscricaoEstadual.contract, uf.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<PessoaJuridicaInscricaoEstadual>(this, objetoDynamic);
 
             if (IsValid)
             {
-                AccountId = accountId;
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                DocumentoInscricaoEstadual = inscricaoEstadual;
-                UF = uf;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, DocumentoInscricaoEstadual.contract, UF.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

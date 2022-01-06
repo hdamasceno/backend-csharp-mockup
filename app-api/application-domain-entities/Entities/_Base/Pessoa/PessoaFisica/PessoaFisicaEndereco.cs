@@ -29,40 +29,23 @@ namespace application_data_entities
             Load(objetoDynamic);
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON invalido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AlteradoDataHora, false, false, true);
-
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-            Key pessoaFisicaId = FuncoesEspeciais.ToGuid(objetoDynamic?.PessoaFisicaId);
-            Key enderecoId = FuncoesEspeciais.ToGuid(objetoDynamic?.EnderecoId);
-            bool isPrincipal = FuncoesEspeciais.ToString(objetoDynamic?.IsPrincipal) == "TRUE";
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract, pessoaFisicaId.contract, enderecoId.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<PessoaFisicaEndereco>(this, objetoDynamic);
 
             if (IsValid)
             {
-                AccountId = accountId;
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                PessoaFisicaId = pessoaFisicaId;
-                EnderecoId = enderecoId;
-                IsPrincipal = isPrincipal;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, PessoaFisicaId.contract, EnderecoId.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
 

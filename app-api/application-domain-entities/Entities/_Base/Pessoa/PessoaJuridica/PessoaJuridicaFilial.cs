@@ -24,7 +24,22 @@ namespace application_data_entities
 
         public void Load(dynamic objetoDynamic)
         {
+            if (objetoDynamic == null)
+            {
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
 
+                return;
+            }
+
+            LoadFromDynamic<PessoaJuridicaFilial>(this, objetoDynamic);
+
+            if (IsValid)
+            {
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, PessoaJuridicaFilialId.contract, PessoaJuridicaMatrizId.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
+            }
         }
     }
 }
