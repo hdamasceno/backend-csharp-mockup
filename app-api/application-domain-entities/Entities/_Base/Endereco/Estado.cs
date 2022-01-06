@@ -36,37 +36,23 @@ namespace application_data_entities
             }
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Name nome = FuncoesEspeciais.ToString(objetoDynamic?.Nome);
-            Uf uf = FuncoesEspeciais.ToString(objetoDynamic?.UF);
-            DecimalPositive ibgeCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.IbgeCodigo);
-
-            AddNotifications(cadastradoDataHora.contract, nome.contract, uf.contract, IbgeCodigo.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
+            LoadFromDynamic<Estado>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                UF = uf;
-                IbgeCodigo = ibgeCodigo;
-                Nome = nome;
+                AddNotifications(CadastradoDataHora.contract, Nome.contract, UF.contract, IbgeCodigo.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
             }
         }
     }

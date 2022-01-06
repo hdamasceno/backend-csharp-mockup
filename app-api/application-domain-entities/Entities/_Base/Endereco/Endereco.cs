@@ -58,48 +58,27 @@ namespace application_data_entities
             }
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Key estadoId = FuncoesEspeciais.ToGuid(objetoDynamic?.EstadoId);
-            Key cidadeId = FuncoesEspeciais.ToGuid(objetoDynamic?.CidadeId);
-            Logradouro logradouro = FuncoesEspeciais.ToString(objetoDynamic?.Logradouro);
-            Cep cep = FuncoesEspeciais.ToString(objetoDynamic?.Cep);
-            string numero = FuncoesEspeciais.ToString(objetoDynamic?.Numero);
-            string complemento = FuncoesEspeciais.ToString(objetoDynamic?.Complemento);
-
-            AddNotifications
-                (
-                    cadastradoDataHora.contract,
-                    alteradoDataHora?.contract,
-                    estadoId.contract,
-                    cidadeId.contract,
-                    logradouro.contract,
-                    cep.contract
-                );
+            LoadFromDynamic<Endereco>(this, objetoDynamic);
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                EstadoId = estadoId;
-                CidadeId = cidadeId;
-                Logradouro = logradouro;
-                Numero = numero;
-                Complemento = complemento;
-                Cep = Cep;
+                AddNotifications
+                (
+                    CadastradoDataHora.contract,                    
+                    EstadoId.contract,
+                    CidadeId.contract,
+                    Logradouro.contract,
+                    Cep.contract
+                );
             }
         }
     }

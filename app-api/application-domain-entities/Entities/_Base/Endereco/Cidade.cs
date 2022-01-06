@@ -37,39 +37,25 @@ namespace application_data_entities
             }
         }
 
-        public void LoadRelationShips()
-        {
-        }
-
         public void Load(dynamic objetoDynamic)
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            DecimalPositive ibgeCodigo = FuncoesEspeciais.ToDecimal(objetoDynamic?.IbgeCodigo);
-            Key estadoId = FuncoesEspeciais.ToGuid(objetoDynamic?.EstadoId);
-            Name nome = FuncoesEspeciais.ToString(objetoDynamic?.Nome);
-
-            AddNotifications(
-                cadastradoDataHora.contract,
-                alteradoDataHora?.contract,
-                ibgeCodigo.contract,
-                estadoId.contract,
-                nome.contract);
+            LoadFromDynamic<Cidade>(this, objetoDynamic);
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                IbgeCodigo = ibgeCodigo;
-                EstadoId = estadoId;
-                Nome = nome;
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    AlteradoDataHora?.contract,
+                    IbgeCodigo.contract,
+                    EstadoId.contract,
+                    Nome.contract);
             }
         }
     }

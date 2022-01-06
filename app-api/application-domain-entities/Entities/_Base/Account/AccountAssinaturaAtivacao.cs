@@ -31,43 +31,23 @@ namespace application_data_entities
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.AlteradoDataHora, false, false, true);
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic.AccountId);
-            Key accountAssinaturaId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountAssinaturaId);
-            DataHora ativacaoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.AtivacaoDataHora, false, false, true);
-            Key ativacaoDeviceId = FuncoesEspeciais.ToGuid(objetoDynamic?.AtivacaoDeviceId);
-            string ativacaoIp = FuncoesEspeciais.ToString(objetoDynamic?.AtivacaoIp);
-            bool isAtivacaoFinanceira = FuncoesEspeciais.ToString(objetoDynamic?.IsAtivacaoFinanceira) == "TRUE";
-            Data validadeData = FuncoesEspeciais.ToDateTime(objetoDynamic?.ValidadeData, true, false, true);
-            Data validadeCarenciaData = FuncoesEspeciais.ToDateTime(objetoDynamic?.ValidadeCarenciaData, true, false, true);
-
-            AddNotifications(
-                accountId.contract,
-                accountAssinaturaId.contract,
-                ativacaoDataHora.contract,
-                ativacaoDeviceId.contract,
-                ValidadeData.contract,
-                validadeCarenciaData.contract
-            );
+            LoadFromDynamic<AccountAssinaturaAtivacao>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                AccountId = accountId;
-                AccountAssinaturaId = accountAssinaturaId;
-                AtivacaoDataHora = ativacaoDataHora;
-                AtivacaoDeviceId = ativacaoDeviceId;
-                AtivacaoIp = ativacaoIp;
-                IsAtivacaoFinanceira = isAtivacaoFinanceira;
-                ValidadeData = validadeData;
-                ValidadeCarenciaData = validadeCarenciaData;
+                AddNotifications(
+                    AccountId.contract,
+                    AccountAssinaturaId.contract,
+                    AtivacaoDataHora.contract,
+                    AtivacaoDeviceId.contract,
+                    ValidadeData.contract,
+                    ValidadeCarenciaData.contract
+                );
             }
         }
     }

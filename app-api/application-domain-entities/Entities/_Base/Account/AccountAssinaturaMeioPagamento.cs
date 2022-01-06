@@ -16,8 +16,8 @@ namespace application_data_entities
         public DataHora? AlteradoDataHora { get; private set; }
         public Key AccountId { get; private set; }
         public virtual IEntidade? Account { get; private set; }
-        public Key AccoutAssinaturaId { get; private set; }
-        public virtual IEntidadeBase? AccoutAssinatura { get; private set; }
+        public Key AccountAssinaturaId { get; private set; }
+        public virtual IEntidadeBase? AccountAssinatura { get; private set; }
         public Key? PessoaFisicaId { get; private set; }
         public virtual IEntidadeBase? PessoaFisica { get; private set; }
         public Key? PessoaJuridicaId { get; private set; }
@@ -38,43 +38,28 @@ namespace application_data_entities
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
-            }
+            }            
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic?.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic?.AlteradoDataHora, false, false, true);
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountId);
-            Key accountAssinaturaId = FuncoesEspeciais.ToGuid(objetoDynamic?.AccountAssinaturaId);
-            Key? pessoaJuridicaId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.PessoaJuridicaId);
-            Key? pessoaFisicaId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.PessoaFisicaId);
-            Key? enderecoId = FuncoesEspeciais.ToGuidOrNull(objetoDynamic?.EnderecoId);
-            string cartaoToken = FuncoesEspeciais.ToString(objetoDynamic?.CartaoToken, false, false, false);
-
-            AddNotifications(accountId.contract, cadastradoDataHora.contract, accountAssinaturaId.contract);
-
-            if (alteradoDataHora.HasValue)
-                AddNotifications(alteradoDataHora?.contract);
-
-            if (pessoaFisicaId.HasValue)
-                AddNotifications(pessoaFisicaId?.contract);
-
-            if (pessoaJuridicaId.HasValue)
-                AddNotifications(pessoaJuridicaId?.contract);
-
-            if (enderecoId.HasValue)
-                AddNotifications(enderecoId?.contract);
+            LoadFromDynamic<AccountAssinaturaMeioPagamento>(this, objetoDynamic);
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                AccountId = accountId;
-                PessoaFisicaId = pessoaFisicaId;
-                PessoaJuridicaId = pessoaJuridicaId;
-                EnderecoId = enderecoId;
-                CartaoToken = cartaoToken;
+                AddNotifications(AccountId.contract, CadastradoDataHora.contract, AccountAssinaturaId.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
+
+                if (PessoaFisicaId.HasValue)
+                    AddNotifications(PessoaFisicaId?.contract);
+
+                if (PessoaJuridicaId.HasValue)
+                    AddNotifications(PessoaJuridicaId?.contract);
+
+                if (EnderecoId.HasValue)
+                    AddNotifications(EnderecoId?.contract);
             }
         }
 

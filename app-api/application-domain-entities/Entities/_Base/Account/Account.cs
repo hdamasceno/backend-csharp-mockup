@@ -47,6 +47,13 @@ namespace application_data_entities
 
         public void Load(dynamic objetoDynamic)
         {
+            if (objetoDynamic == null)
+            {
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
+
+                return;
+            }
+
             LoadFromDynamic<Account>(this, objetoDynamic);
 
             if (IsValid)

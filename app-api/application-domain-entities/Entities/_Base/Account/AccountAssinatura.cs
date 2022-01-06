@@ -37,57 +37,29 @@ namespace application_data_entities
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.AlteradoDataHora, false, false, true);
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic.AccountId);
-            Key produtoId = FuncoesEspeciais.ToGuid(objetoDynamic.ProdutoId);
-            DataHora assinaturaDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.AssinaturaDataHora, false, false, true);
-            DataHora validadeInicialDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.ValidadeInicialDataHora, false, false, true);
-            DataHora validadeFinalDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.ValidadeFinalDataHora, false, false, true);
-            bool cancelado = FuncoesEspeciais.ToString(objetoDynamic.Cancelado) == "TRUE";
-            DataHora? canceladoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.CanceladoDataHora, false, false, true);
-            string canceladoMotivo = FuncoesEspeciais.ToString(objetoDynamic.CanceladoMotivo, false, false, false);
-            bool renovacaoAutomatica = FuncoesEspeciais.ToString(objetoDynamic.RenovacaoAutomatica) == "TRUE";
-            bool bloqueado = FuncoesEspeciais.ToString(objetoDynamic.Bloqueado) == "TRUE";
-            DataHora? bloqueadoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.BloqueadadoDataHora, false, false, true);
-            string bloqueadoMotivo = FuncoesEspeciais.ToString(objetoDynamic?.BloqueadoMotivo);
-
-            AddNotifications(
-                cadastradoDataHora.contract,
-                accountId.contract,
-                produtoId.contract,
-                assinaturaDataHora.contract,
-                validadeInicialDataHora.contract,
-                validadeFinalDataHora.contract
-            );
-
-            if (canceladoDataHora.HasValue)
-                AddNotifications(canceladoDataHora?.contract);
-
-            if (bloqueadoDataHora.HasValue)
-                AddNotifications(bloqueadoDataHora?.contract);
+            LoadFromDynamic<AccountAssinatura>(this, objetoDynamic);            
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                AccountId = accountId;
-                ProdutoId = produtoId;
-                AssinaturaDataHora = assinaturaDataHora;
-                ValidadeInicialDataHora = validadeInicialDataHora;
-                ValidadeFinalDataHora = validadeFinalDataHora;
-                Bloqueado = bloqueado;
-                BloqueadoDataHora = bloqueadoDataHora;
-                BloqueadoMotivo = bloqueadoMotivo;
-                Cancelado = cancelado;
-                CanceladoDataHora = canceladoDataHora;
-                CanceladoMotivo = canceladoMotivo;
-                RenovacaoAutomatica = renovacaoAutomatica;
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    AccountId.contract,
+                    ProdutoId.contract,
+                    AssinaturaDataHora.contract,
+                    ValidadeInicialDataHora.contract,
+                    ValidadeFinalDataHora.contract
+                );
+
+                if (CanceladoDataHora.HasValue)
+                    AddNotifications(CanceladoDataHora?.contract);
+
+                if (BloqueadoDataHora.HasValue)
+                    AddNotifications(BloqueadoDataHora?.contract);
             }
         }
 

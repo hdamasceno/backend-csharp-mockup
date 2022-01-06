@@ -29,44 +29,28 @@ namespace application_data_entities
         {
             if (objetoDynamic == null)
             {
-                AddNotification($"{GetType().Name}.LoadFromDynamic", $"{GetType().Name} - JSON inválido.");
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON inválido.");
 
                 return;
             }
 
-            DataHora cadastradoDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.CadastradoDataHora, false, false, true);
-            DataHora? alteradoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.AlteradoDataHora, false, false, true);
-            Key accountId = FuncoesEspeciais.ToGuid(objetoDynamic.AccountId);
-            Key accountAssinaturaId = FuncoesEspeciais.ToGuid(objetoDynamic.AccountAssinaturaId);
-            Key featureId = FuncoesEspeciais.ToGuid(objetoDynamic.FeatureId);
-            DataHora validadeInicialDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.ValidadeInicialDataHora, false, false, true);
-            DataHora validadeFinalDataHora = FuncoesEspeciais.ToDateTime(objetoDynamic.ValidadeFinalDataHora, false, false, true);
-            bool cancelado = FuncoesEspeciais.ToString(objetoDynamic.Cancelado) == "TRUE";
-            DataHora? canceladoDataHora = FuncoesEspeciais.ToDateTimeNull(objetoDynamic.CanceladoDataHora, false, false, true);
-
-            AddNotifications(
-                cadastradoDataHora.contract,
-                accountId.contract,
-                accountAssinaturaId.contract,
-                featureId.contract,
-                validadeInicialDataHora.contract,
-                validadeFinalDataHora.contract
-            );
-
-            if (canceladoDataHora.HasValue)
-                AddNotifications(canceladoDataHora?.contract);
+            LoadFromDynamic<AccountAssinaturaFeature>(this, objetoDynamic);
 
             if (IsValid)
             {
-                CadastradoDataHora = cadastradoDataHora;
-                AlteradoDataHora = alteradoDataHora;
-                AccountId = accountId;
-                AccountAssinaturaId = accountAssinaturaId;
-                FeatureId = featureId;
-                ValidadeInicialDataHora = validadeInicialDataHora;
-                ValidadeFinalDataHora = validadeFinalDataHora;
-                Cancelado = cancelado;
-                CanceladoDataHora = canceladoDataHora;
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    AccountId.contract,
+                    AccountAssinaturaId.contract,
+                    FeatureId.contract,
+                    ValidadeInicialDataHora.contract                    
+                );
+
+                if (CanceladoDataHora.HasValue)
+                    AddNotifications(CanceladoDataHora?.contract);
+
+                if (ValidadeFinalDataHora.HasValue)
+                    AddNotifications(ValidadeFinalDataHora?.contract);
             }
         }
     }
