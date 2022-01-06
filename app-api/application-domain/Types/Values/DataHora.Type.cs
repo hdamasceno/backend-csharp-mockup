@@ -44,5 +44,53 @@ namespace application_domain.Types.Values
 
             return false;
         }
+
+        public string ToNFe(string UF)
+        {
+            string dataHora = _value.ToString("yyyy") + "-" +
+                _value.ToString("MM") + "-" +
+                _value.ToString("dd") +
+                "T" +
+                _value.ToString("HH") + ":" +
+                _value.ToString("mm") + ":" +
+                _value.ToString("ss");
+
+            if (_value.IsDaylightSavingTime())
+            {
+                if (UF == "MG" ||
+                    UF == "DF" ||
+                    UF == "RJ" ||
+                    UF == "SP" ||
+                    UF == "MA" ||
+                    UF == "PA" ||
+                    UF == "BA")
+                {
+                    dataHora = dataHora + "-02:00";
+                }
+                else if (UF == "MT")
+                    dataHora = dataHora + "-03:00";
+                else if (UF == "AM" || UF == "RO")
+                    dataHora = dataHora + "-03:00";
+            }
+            else
+            {
+                if (UF == "MG" ||
+                    UF == "DF" ||
+                    UF == "RJ" ||
+                    UF == "SP" ||
+                    UF == "MA" ||
+                    UF == "PA" ||
+                    UF == "BA")
+                {
+                    dataHora = dataHora + "-03:00";
+                }
+                else if (UF == "MT")
+                    dataHora = dataHora + "-03:00";
+                else if (UF == "AM" || UF == "RO")
+                    dataHora = dataHora + "-04:00";
+            }
+
+            return dataHora;
+        }
     }
 }
