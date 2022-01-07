@@ -16,9 +16,14 @@ using application_domain.Objects;
 
 namespace application_infra_data.Repository
 {
+    // pode matar isso aqui
+    // raven trabalha com uma unica instancia (singleton) nao existe esse conceito repositorio base
+    // a instancia é criada em Lazy para nao sobrecarregar a memoria, e nao é mais usada em momento algum, pois ja vai estar na pipeline de toda a aplicaçao
+    // o Store sera configurado numa classe e voce injeta o IDocumentSession para ser usado em todo canto sem precisar disso aqui
+    // IEntidade nao usa em canto nenhum, rever isso
     public class BaseRepositoryRaven<IEntidade, TKeyType> where IEntidade : BaseEntity<TKeyType>
     {
-        protected string DataBaseEndPoint { get; private set; } = string.Empty;
+        protected string DataBaseEndPoint { get; private set; } = string.Empty; 
         protected string DataBaseName { get; private set; } = string.Empty;
         protected string DataBaseCertificatePassword { get; private set; } = string.Empty;
         protected string DataBaseCertificateUrl { get; private set; } = string.Empty;

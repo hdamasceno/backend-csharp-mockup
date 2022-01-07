@@ -31,7 +31,10 @@ namespace application_domain.Abstracts
 
             return errors;
         }
-
+        
+        // over engineer heehe
+        // passa um objeto concreto, transforma em string e depois em dinamico?? :D
+        // json é string e json convertido é objeto, ponto final! retrabalho a toa
         public virtual dynamic ToDynamic<T>()
         {
             string json = ToJSON<T>();
@@ -39,6 +42,7 @@ namespace application_domain.Abstracts
             return FuncoesEspeciais.WebApi_Json_Deserializar<dynamic>(json);
         }
 
+        // pra q isso aqui?? :D
         public virtual string ToJSON<T>()
         {
             string json = string.Empty;
@@ -61,6 +65,7 @@ namespace application_domain.Abstracts
             return json;
         }
 
+        // q isso tudo aqui doidão? ahahu fiquei curioso
         protected virtual void LoadFromDynamic<T>(Object _return,
             dynamic objetoDynamic,
             Boolean toUpper = true,

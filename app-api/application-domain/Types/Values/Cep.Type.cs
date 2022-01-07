@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace application_domain.Types.Values
+namespace application_domain.Types.Values // Value Objects é o nome correto e fez muito bem usar struct do que classe, pq??? depois me explique :D
 {
     public struct Cep
     {

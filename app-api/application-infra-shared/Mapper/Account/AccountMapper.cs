@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 using application_data_entities;
 using application_data_models.Models.Account;
 
-namespace application_infra_shared
+namespace application_infra_shared // kill
 {
+
+    // quem faz o mapeamento n é a infra e sim a camada que recebe o dado do repositorio
+    // remember: repositorio nao retorna objeto mapeado, traz o dado como esta do banco
+    // cabe a um "serviço" fazer esse trabalho de conversao para o tipo xpto
+    // neste caso seria o application_service.Services o responsavel
     public static class AccountMapper
     {
         public static Account ConvertToEntity

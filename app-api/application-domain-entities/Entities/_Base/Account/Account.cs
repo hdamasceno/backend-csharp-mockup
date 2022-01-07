@@ -10,7 +10,13 @@ using application_domain.Interfaces;
 using System.Reflection;
 using application_domain.Objects;
 
-namespace application_data_entities
+// application é uma coisa
+// domain e domain services é outra
+// n precisa tanta camada, so esta trazendo complexidade e deficit tecnico pro futuro
+// menos é mais.. n precisa ser nada faraonico
+
+
+namespace application_data_entities // entidade é do dominio e nao da camada de apliação
 {
     public class Account : BaseEntity<Key>, IEntidade
     {

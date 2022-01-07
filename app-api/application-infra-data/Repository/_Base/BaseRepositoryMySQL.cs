@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using application_domain.Abstracts;
 using application_infra_data.Context;
+using System;
 
 namespace application_infra_data.Repository
 {
@@ -16,13 +17,16 @@ namespace application_infra_data.Repository
         protected virtual void Insert(TEntity obj)
         {
             _context.Set<TEntity>().Add(obj);
-            _context.SaveChanges();
+            _context.SaveChanges(); // nunca save changes para cada request
+
+            // se voce precisar usar um serviço que use 3 repositorios, serao 3 requests no banco devido o save changes
+            // para isso vc usa o pattern unit of work e o save changes fica la um "unico commit" para toda a transaçao
         }
 
         protected virtual void Update(TEntity obj)
         {
             _context.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.SaveChanges();
+            _context.SaveChanges(); // nunca save changes para cada request
         }
 
         protected virtual void Update<TProperty>(
@@ -34,7 +38,7 @@ namespace application_infra_data.Repository
             foreach (var item in propsToIgnore)
                 item.IsModified = false;
 
-            _context.SaveChanges();
+            _context.SaveChanges(); // nunca save changes para cada request
         }
 
         protected virtual void Delete(int id)
