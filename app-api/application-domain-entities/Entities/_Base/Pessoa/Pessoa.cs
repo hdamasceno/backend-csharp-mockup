@@ -11,6 +11,7 @@ namespace application_data_entities
         public DataHora? AlteradoDataHora { get; set; }
         public Key AccountId { get; set; }
         public virtual IEntidade? Account { get; set; }
+        public Name Nome { get; set; } = string.Empty;
 
         public Pessoa() : base(id: Guid.NewGuid())
         {
@@ -26,6 +27,24 @@ namespace application_data_entities
 
         public virtual void Load(dynamic objetoDynamic)
         {
+            if (objetoDynamic == null)
+            {
+                AddNotification($"{GetType().Name}.Load", $"{GetType().Name} - JSON invalido.");
+
+                return;
+            }
+
+            LoadFromDynamic<RegimeTributario>(this, objetoDynamic);
+
+            if (IsValid)
+            {
+                AddNotifications(
+                    CadastradoDataHora.contract,
+                    Nome.contract);
+
+                if (AlteradoDataHora.HasValue)
+                    AddNotifications(AlteradoDataHora?.contract);
+            }
         }
     }
 }
