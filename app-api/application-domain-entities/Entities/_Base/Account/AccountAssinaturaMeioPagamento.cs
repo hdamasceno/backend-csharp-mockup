@@ -10,6 +10,9 @@ using Biblioteca;
 
 namespace application_data_entities
 {
+    //DDD é linguagem UBIQUOA, isso que dizer que:
+    // ACCOUNT ASSINATURA nao existe... ou é ContaAssinatura ou AccountSubscription (por exemplo)
+    // juntar ingles + pt + arabe nao da hehehe
     public class AccountAssinaturaMeioPagamento : BaseEntity<Key>, IEntidadeBase
     {
         public DataHora CadastradoDataHora { get; private set; }

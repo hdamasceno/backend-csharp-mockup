@@ -10,6 +10,7 @@ using application_domain.Interfaces;
 
 namespace application_data_entities
 {
+    // ja pensou em consumir o endereço de um serviço de ceps? :D quem guarda endereço em tabela?? isso nem existe mais
     public class Estado : BaseEntity<Key>, IEntidade
     {
         public DataHora CadastradoDataHora { get; set; }

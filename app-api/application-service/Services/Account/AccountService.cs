@@ -12,7 +12,11 @@ using application_data_models.Models.Account;
 using application_infra_data.Repository;
 using application_infra_shared;
 
-namespace application_service.Services
+// isso sao serviços de aplicação, de exemplo posso usar 2 repositorios aqui em uma unica transaçao, por isso a transaçao deve estar isolada em uma unidade de trabalho
+// açoes de execução nao retornam resultados, sao VOID (insert/delete/update)
+// como vc esta usando api para fazer essas chamada, a sua api devolve a resposta ao browser ou sei la o que
+// unica coisa que retorna sao os GETs (selects)
+namespace application_service.Services 
 {
     public class AccountService : IServiceBase<AccountModel>
     {
@@ -114,13 +118,18 @@ namespace application_service.Services
             return objetoResposta;
         }
 
+        // uai ahauua
         public IResposta Save(AccountModel obj)
         {
             var objetoResposta = new RespostaAPI();
 
             try
             {
-                var objetoEntity = _repository.GetById(FuncoesEspeciais.ToGuid(obj.Id));
+                // da pra consultar por id OU email nao? evitando 2 consultas desnecessarias
+
+                var objetoEntity = _repository.GetById(FuncoesEspeciais.ToGuid(obj.Id)); // 1º consulta
+
+                // raven trabalha 100% string, nao precisa converter string para guid
 
                 if (objetoEntity?.IsValid != true)
                     objetoEntity = AccountMapper.ConvertToEntity(obj);
@@ -139,7 +148,7 @@ namespace application_service.Services
                     return objetoResposta.ComandoExecutadoComErro($"{nameof(objetoEntity)} não localizado na base de dados do aplicativo.");
                 else
                 {
-                    var objAccountTemp = _repository.GetByEmail(obj.Email);
+                    var objAccountTemp = _repository.GetByEmail(obj.Email); // 2º consulta
 
                     if (objAccountTemp?.IsValid == true)
                     {

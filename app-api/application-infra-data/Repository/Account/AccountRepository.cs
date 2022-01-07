@@ -85,12 +85,16 @@ namespace application_infra_data.Repository
             {
                 var objModel = Session
                     .Query<AccountModel>()
-                    .FirstOrDefault(p => p.Id.Equals(id));
+                    .FirstOrDefault(p => p.Id.Equals(id)); // aqui é .FirstOrDefault(p => p.Id == id) pois esta comparando valores e nao objetos
 
                 if (objModel == null)
                     return null;
-                else
+                else // n precisa de else ou use o operador ternario
                     return objModel.ConvertToEntity();
+
+                //return objModel is null ? null : objModel.ConvertToEntity();
+
+                // ou melhor: return objModel?.ConvertToEntity();
             }
         }
 

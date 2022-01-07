@@ -5,6 +5,9 @@ using application_domain.Types.Values;
 
 namespace application_data_entities
 {
+    // hehe faz muitos anos que n via esse negocio de Pessoa
+    // o conceito ideal é vc criar objetos de identidade para cada caso (pj e pf) somente, o resto repete mesmo
+    // pq? pq cada um é uma coisa, n é uma pessoa, sao entidades, entidades tem uma identidade
     public abstract class Pessoa : BaseEntity<Key>, IEntidadeBase
     {
         public DataHora CadastradoDataHora { get; set; }
